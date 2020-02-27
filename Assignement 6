@@ -1,0 +1,117 @@
+
+
+
+
+
+***ASSIGNEMENT NO: 6 ***
+
+
+1.Display department name and manager first name.
+
+SELECT d.DEPARTMENT_NAME, em.FIRST_NAME
+FROM departments d INNER JOIN employees em
+ON d.MANAGER_ID= em.MANAGER_ID;
+
+
+2. Display department name , manager name , and city.
+
+SELECT d.DEPARTMENT_NAME, em.FIRST_NAME, em.LAST_NAME,l.CITY
+FROM departments d INNER JOIN employees em
+ON em.MANAGER_ID= d.MANAGER_ID
+INNER JOIN locations l
+ON d.LOCATION_ID=l.LOCATION_ID;
+
+
+3. Display country name , city , and department name.
+
+SELECT d.DEPARTMENT_NAME, l.CITY, c.COUNTRY_NAME
+FROM departments d INNER JOIN locations l
+ON d.LOCATION_ID= l.LOCATION_ID
+INNER JOIN countries c
+ON l.COUNTRY_ID=c.COUNTRY_ID;
+
+4.Display job title , department name , employee last name ,
+starting date for all jobs from 2000 to 2005 .
+
+SELECT j.JOB_TITLE,d.DEPARTMENT_NAME,e.LAST_NAME,jh.START_DATE
+FROM employees e INNER JOIN departments d
+ON e.DEPARTMENT_ID= d.DEPARTMENT_ID
+INNER JOIN jobs j
+ON e.JOB_ID= j.JOB_ID
+INNER JOIN job_history jh
+ON e.JOB_ID=jh.JOB_ID
+WHERE DATE_FORMAT( START_DATE , '%Y') BETWEEN 2000 AND 2005;
+
+
+5. Display job title and average salary of employees
+
+
+SELECT j.JOB_TITLE, AVG(SALARY) 
+FROM jobs j INNER JOIN employees e
+ON j.JOB_ID=e.JOB_ID                                     
+GROUP BY JOB_TITLE; 
+  
+
+6.Display job title , employee name , and the difference
+  between maximum salary for the job and salary of the
+  employee.
+
+SELECT j.JOB_TITLE,e.FIRST_NAME,e.LAST_NAME, j.MAX_SALARY-e.SALARY AS "Difference"
+FROM jobs j INNER JOIN employees e
+ON j.JOB_ID=e.JOB_ID
+INNER JOIN job_history jh
+ON jh.JOB_ID=j.JOB_ID; 
+
+
+7.Display last name , job title of employees who have commission percentage    and belongs to department 30.
+
+SELECT e.LAST_NAME, j.JOB_TITLE,e.COMMISSION_PCT>0
+FROM employees e INNER join jobs j
+ON e.JOB_ID=j.JOB_ID
+INNER JOIN departments d
+ON e.DEPARTMENT_ID=d.DEPARTMENT_ID
+WHERE d.DEPARTMENT_ID=30;
+
+
+
+8 . Display details of jobs that were done by any employee who
+    is currently drawing more than 15000 of salary .
+
+SELECT j.JOB_ID,j.JOB_TITLE,d.DEPARTMENT_ID,d.DEPARTMENT_NAME,e.FIRST_NAME,e.LAST_NAME,e.SALARY
+FROM employees e INNER JOIN departments d
+ON e.DEPARTMENT_ID= d.DEPARTMENT_ID
+INNER JOIN jobs j
+ON e.JOB_ID=j.JOB_ID
+WHERE e.SALARY>15000;
+
+9.Display department name , manager name , and salary of the
+  manager for all managers whose experience is more than 5
+  years.
+
+
+SELECT d.DEPARTMENT_NAME, em.FIRST_NAME,em.SALARY
+FROM departments d INNER JOIN employees em
+ON d.MANAGER_ID= em.MANAGER_ID
+WHERE em.SALARY> (SELECT TIMESTAMPDIFF(year,'START_DATE','END_DATE' )) ;
+
+
+10. Display employee name if the employee joined before his
+    manager.
+
+
+
+
+
+11. Display employee name , job title for the jobs employee did
+in the past where the job was done less than six months.
+
+SELECT e.FIRST_NAME,e.LAST_NAME,j.JOB_TITLE
+FROM employees e INNER JOIN jobs j
+ON e.JOB_ID=j.JOB_ID
+INNER JOIN job_history jh
+WHERE (MONTH(END_DATE)-(END_DATE))>6;
+
+
+ 
+
+
